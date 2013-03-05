@@ -1,0 +1,32 @@
+﻿<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+	<name>{0}</name>
+	<SSIDConfig>
+		<SSID>
+			<hex>{1}</hex>
+			<name>{0}</name>
+		</SSID>
+	</SSIDConfig>
+	<connectionType>ESS</connectionType>
+	<MSM>
+		<security>
+			<authEncryption>
+				<authentication>open</authentication>
+				<encryption>WEP</encryption>
+				<useOneX>false</useOneX>
+			</authEncryption>
+			<sharedKey>
+				<keyType>networkKey</keyType>
+				<protected>false</protected>
+				<keyMaterial>{2}</keyMaterial>
+			</sharedKey>
+			<keyIndex>0</keyIndex>
+		</security>
+	</MSM>
+</WLANProfile>
+
+<!--
+	0 = Name
+	1 = HexName
+	2 = Key
+-->
