@@ -10,6 +10,13 @@ Currently supported ciphers
 - WEP
 - WPA-PSK
 - WPA2-PSK
+ 
+Supported operating systems
+---------------------------
+- Windows XP SP2 (with hotfix [KB918997](http://support.microsoft.com/kb/918997))
+- Windows Vista
+- Windows 7
+- Windows 8
 
 Related links
 -------------
