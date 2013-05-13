@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using SimpleWifi.Win32.Interop;
 
-using NotifCodeACM = SimpleWifi.Win32.Wlan.WlanNotificationCodeAcm;
-using NotifCodeMSM = SimpleWifi.Win32.Wlan.WlanNotificationCodeMsm;
+using NotifCodeACM = SimpleWifi.Win32.Interop.WlanNotificationCodeAcm;
+using NotifCodeMSM = SimpleWifi.Win32.Interop.WlanNotificationCodeMsm;
 
 namespace SimpleWifi
 {
@@ -32,11 +33,11 @@ namespace SimpleWifi
 		{
 			List<AccessPoint> accessPoints = new List<AccessPoint>();
 			
-			foreach (WlanClient.WlanInterface wlanIface in _client.Interfaces)
+			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
-				Wlan.WlanAvailableNetwork[] networks = wlanIface.GetAvailableNetworkList(0);
+				WlanAvailableNetwork[] networks = wlanIface.GetAvailableNetworkList(0);
 
-				foreach (Wlan.WlanAvailableNetwork network in networks)				
+				foreach (WlanAvailableNetwork network in networks)				
 					accessPoints.Add(new AccessPoint(wlanIface, network));				
 			}
 
@@ -48,7 +49,7 @@ namespace SimpleWifi
 		/// </summary>
 		public void Disconnect()
 		{
-			foreach (WlanClient.WlanInterface wlanIface in _client.Interfaces)
+			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
 				wlanIface.Disconnect();
 			}		
@@ -69,11 +70,11 @@ namespace SimpleWifi
 			}
 		}
 
-		private void inte_WlanNotification(Wlan.WlanNotificationData notifyData)
+		private void inte_WlanNotification(WlanNotificationData notifyData)
 		{
-			if (notifyData.notificationSource == Wlan.WlanNotificationSource.ACM && (NotifCodeACM)notifyData.NotificationCode == NotifCodeACM.Disconnected)
+			if (notifyData.notificationSource == WlanNotificationSource.ACM && (NotifCodeACM)notifyData.NotificationCode == NotifCodeACM.Disconnected)
 				OnConnectionStatusChanged(WifiStatus.Disconnected);
-			else if (notifyData.notificationSource == Wlan.WlanNotificationSource.MSM && (NotifCodeMSM)notifyData.NotificationCode == NotifCodeMSM.Connected)
+			else if (notifyData.notificationSource == WlanNotificationSource.MSM && (NotifCodeMSM)notifyData.NotificationCode == NotifCodeMSM.Connected)
 				OnConnectionStatusChanged(WifiStatus.Connected);
 		}
 

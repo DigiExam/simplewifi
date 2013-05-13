@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SimpleWifi</RootNamespace>
     <AssemblyName>SimpleWifi</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -59,10 +59,16 @@
     <Compile Include="AccessPoint.cs" />
     <Compile Include="PasswordHelper.cs" />
     <Compile Include="ProfileFactory.cs" />
-    <Compile Include="Win32\Interop.cs" />
+    <Compile Include="Win32\Helpers\WlanHelpers.cs" />
+    <Compile Include="Win32\Interop\Enums.cs" />
+    <Compile Include="Win32\Interop\Exceptions.cs" />
+    <Compile Include="Win32\Interop\Interop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wifi.cs" />
+    <Compile Include="Win32\Interop\Structs.cs" />
     <Compile Include="Win32\WlanApi.cs" />
+    <Compile Include="Win32\WlanInterface.cs" />
+    <Compile Include="Win32\WlanNotificationStructs.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

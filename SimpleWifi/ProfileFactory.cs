@@ -1,4 +1,5 @@
 ﻿using SimpleWifi.Win32;
+using SimpleWifi.Win32.Interop;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,19 +21,21 @@ namespace SimpleWifi
 
 			switch (ap.Network.dot11DefaultCipherAlgorithm)
 			{
-				case Wlan.Dot11CipherAlgorithm.WEP:
+				case Dot11CipherAlgorithm.WEP:
 					template = GetTemplate("WEP");
 					string hex = GetHexString(ap.Network.dot11Ssid.SSID);
 					profile = string.Format(template, ap.Name, hex, password);
 					break;
-				case Wlan.Dot11CipherAlgorithm.CCMP: 
+				case Dot11CipherAlgorithm.CCMP: 
 					template = GetTemplate("WPA2-PSK");
 					profile = string.Format(template, ap.Name, password);
 					break;
-				case Wlan.Dot11CipherAlgorithm.TKIP:
+				case Dot11CipherAlgorithm.TKIP:
 					template = GetTemplate("WPA-PSK");
 					profile = string.Format(template, ap.Name, password);
 					break;			
+					// TODO: Implement WPA2 Enterprise
+
 				default:
 					throw new NotImplementedException("Profile for selected cipher algorithm is not implemented");
 			}					

@@ -6,15 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using SimpleWifi.Win32.Interop;
 
 namespace SimpleWifi
 {
 	public class AccessPoint
 	{
-		private WlanClient.WlanInterface _interface;
-		private Wlan.WlanAvailableNetwork _network;
+		private WlanInterface _interface;
+		private WlanAvailableNetwork _network;
 
-		internal AccessPoint(WlanClient.WlanInterface interfac, SimpleWifi.Win32.Wlan.WlanAvailableNetwork network)
+		internal AccessPoint(WlanInterface interfac, WlanAvailableNetwork network)
 		{
 			_interface = interfac;
 			_network = network;
@@ -43,7 +44,14 @@ namespace SimpleWifi
 		{
 			get
 			{
-				return _interface.GetProfiles().Where(p => p.profileName == Name).Any();
+				try
+				{
+					return _interface.GetProfiles().Where(p => p.profileName == Name).Any();
+				}
+				catch 
+				{ 
+					return false; 
+				}
 			}
 		}
 		
@@ -75,7 +83,7 @@ namespace SimpleWifi
 		/// <summary>
 		/// Returns the underlying network object.
 		/// </summary>
-		internal Wlan.WlanAvailableNetwork Network
+		internal WlanAvailableNetwork Network
 		{
 			get
 			{
@@ -107,10 +115,10 @@ namespace SimpleWifi
 					_interface.DeleteProfile(Name);
 
 				string profileXML = ProfileFactory.Generate(this, password);
-				_interface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXML, true);
+				_interface.SetProfile(WlanProfileFlags.AllUser, profileXML, true);				
 			}
 
-			return _interface.ConnectSynchronously(Wlan.WlanConnectionMode.Profile, _network.dot11BssType, Name, 3000);			
+			return _interface.ConnectSynchronously(WlanConnectionMode.Profile, _network.dot11BssType, Name, 3000);			
 		}
 
 		/// <summary>
@@ -118,6 +126,7 @@ namespace SimpleWifi
 		/// </summary>
 		public void ConnectAsync(string password, bool overwriteProfile = false, Action<bool> onConnectComplete = null)
 		{
+			// TODO: Refactor -> Use async connect in wlaninterface.
 			ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
 				bool success = false;
 
@@ -133,6 +142,39 @@ namespace SimpleWifi
 				if (onConnectComplete != null)
 					onConnectComplete(success);
 			}));
+		}
+				
+		public string GetProfileXML()
+		{
+			if (HasProfile)
+				return _interface.GetProfileXml(Name);
+			else
+				return string.Empty;
+		}
+
+		public void DeleteProfile()
+		{
+			try
+			{
+				if (HasProfile)
+					_interface.DeleteProfile(Name);
+			}
+			catch { }
+		}
+
+		public override sealed string ToString()
+		{
+			StringBuilder info = new StringBuilder();
+			info.AppendLine("Interface: " + _interface.InterfaceName);
+			info.AppendLine("Auth algorithm: " + _network.dot11DefaultAuthAlgorithm);
+			info.AppendLine("Cipher algorithm: " + _network.dot11DefaultCipherAlgorithm);
+			info.AppendLine("BSS type: " + _network.dot11BssType);
+			info.AppendLine("Connectable: " + _network.networkConnectable);
+			
+			if (!_network.networkConnectable)
+				info.AppendLine("Reason to false: " + _network.wlanNotConnectableReason);
+
+			return info.ToString();
 		}
 	}
 }

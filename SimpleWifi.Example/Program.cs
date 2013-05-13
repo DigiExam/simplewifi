@@ -28,6 +28,10 @@ namespace SimpleWifi.Example
 				Console.WriteLine("C. Connect");
 				Console.WriteLine("D. Disconnect");
 				Console.WriteLine("S. Status");
+				Console.WriteLine("X. Print profile XML");
+				Console.WriteLine("R. Remove profile");
+				Console.WriteLine("I. Show access point information");
+				Console.WriteLine("Q. Quit");
 				
 				command = Console.ReadLine().ToLower();
 
@@ -51,6 +55,15 @@ namespace SimpleWifi.Example
 					break;
 				case "s":
 					Status();
+					break;
+				case "x":
+					ProfileXML();
+					break;
+				case "r":
+					DeleteProfile();
+					break;
+				case "i":
+					ShowInfo();
 					break;
 				case "q":
 					break;
@@ -135,6 +148,44 @@ namespace SimpleWifi.Example
 			}
 
 			return password;
+		}
+
+		static void ProfileXML()
+		{
+			var accessPoints = List();
+
+			Console.Write("\r\nEnter the index of the network you wish to print XML for: ");
+
+			int selectedIndex = int.Parse(Console.ReadLine());
+			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
+
+			Console.WriteLine("\r\n{0}\r\n", selectedAP.GetProfileXML());
+		}
+
+		static void DeleteProfile()
+		{
+			var accessPoints = List();
+
+			Console.Write("\r\nEnter the index of the network you wish to delete the profile: ");
+
+			int selectedIndex = int.Parse(Console.ReadLine());
+			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
+
+			selectedAP.DeleteProfile();
+			Console.WriteLine("\r\nDeleted profile for: {0}\r\n", selectedAP.Name);
+		}
+
+
+		static void ShowInfo()
+		{
+			var accessPoints = List();
+
+			Console.Write("\r\nEnter the index of the network you wish to see info about: ");
+
+			int selectedIndex = int.Parse(Console.ReadLine());
+			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
+
+			Console.WriteLine("\r\n{0}\r\n", selectedAP.ToString());
 		}
 		
 		static void wifi_ConnectionStatusChanged(object sender, WifiStatusEventArgs e)
