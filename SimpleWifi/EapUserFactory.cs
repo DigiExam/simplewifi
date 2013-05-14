@@ -18,7 +18,7 @@ namespace SimpleWifi
 
 			string profile = string.Empty;
 			string template = string.Empty;
-
+			
 			/*switch (ap.Network.dot11DefaultCipherAlgorithm)
 			{
 				case Dot11CipherAlgorithm.WEP:

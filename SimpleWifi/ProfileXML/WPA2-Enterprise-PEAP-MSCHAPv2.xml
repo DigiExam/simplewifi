@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+	<name>{0}</name>
+	<SSIDConfig>
+		<SSID>
+			<name>{0}</name>
+		</SSID>
+	</SSIDConfig>
+	<connectionType>ESS</connectionType>
+	<connectionMode>auto</connectionMode>
+	<MSM>
+		<security>
+			<authEncryption>
+				<authentication>WPA2</authentication>
+				<encryption>AES</encryption>
+				<useOneX>true</useOneX>
+			</authEncryption>
+			<OneX xmlns="http://www.microsoft.com/networking/OneX/v1">
+				<EAPConfig>
+					<EapHostConfig xmlns="http://www.microsoft.com/provisioning/EapHostConfig" xmlns:eapCommon="http://www.microsoft.com/provisioning/EapCommon" xmlns:baseEap="http://www.microsoft.com/provisioning/BaseEapMethodConfig">
+						<EapMethod>
+							<eapCommon:Type>25</eapCommon:Type>
+							<eapCommon:AuthorId>0</eapCommon:AuthorId>
+						</EapMethod>
+						<Config xmlns:baseEap="http://www.microsoft.com/provisioning/BaseEapConnectionPropertiesV1" xmlns:msPeap="http://www.microsoft.com/provisioning/MsPeapConnectionPropertiesV1" xmlns:msChapV2="http://www.microsoft.com/provisioning/MsChapV2ConnectionPropertiesV1">
+							<baseEap:Eap>
+								<baseEap:Type>25</baseEap:Type>
+								<msPeap:EapType>
+									<msPeap:ServerValidation>
+										<msPeap:DisableUserPromptForServerValidation>false</msPeap:DisableUserPromptForServerValidation>
+										<msPeap:TrustedRootCA />
+									</msPeap:ServerValidation>
+									<msPeap:FastReconnect>true</msPeap:FastReconnect>
+									<msPeap:InnerEapOptional>0</msPeap:InnerEapOptional>
+									<baseEap:Eap>
+										<baseEap:Type>26</baseEap:Type>
+										<msChapV2:EapType>
+											<msChapV2:UseWinLogonCredentials>false</msChapV2:UseWinLogonCredentials>
+										</msChapV2:EapType>
+									</baseEap:Eap>
+									<msPeap:EnableQuarantineChecks>false</msPeap:EnableQuarantineChecks>
+									<msPeap:RequireCryptoBinding>false</msPeap:RequireCryptoBinding>
+									<msPeap:PeapExtensions />
+								</msPeap:EapType>
+							</baseEap:Eap>
+						</Config>
+					</EapHostConfig>
+				</EAPConfig>
+			</OneX>
+		</security>
+	</MSM>
+</WLANProfile>
+
+<!--
+	0 = Name
+-->
