@@ -1,7 +1,7 @@
 ﻿SimpleWifi
 ==========
 
-SimpleWifi is a .NET 4.5 library written in C# to manage wifi connections in Windows.  It is basically a layer of abstraction above Managed Wifi API that takes care of wifi connection profile creation etc, built to be easy to use.
+SimpleWifi is a .NET 4 library written in C# to manage wifi connections in Windows.  It is basically a layer of abstraction above Managed Wifi API that takes care of wifi connection profile creation etc, built to be easy to use.
 
 An example console application is supplied.
 
