@@ -91,6 +91,13 @@
     <EmbeddedResource Include="ProfileXML\WPA-PSK.xml" />
     <EmbeddedResource Include="ProfileXML\WPA2-PSK.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="EapXML\EAP-MS-CHAPv2.xml" />
+    <Content Include="EapXML\EAP-TLS.xml" />
+    <Content Include="EapXML\PEAP-MS-CHAPv2.xml" />
+    <Content Include="EapXML\PEAP-TLS.xml" />
+    <Content Include="EapXML\SDK.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
