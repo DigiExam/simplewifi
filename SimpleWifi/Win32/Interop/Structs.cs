@@ -580,4 +580,26 @@ namespace SimpleWifi.Win32.Interop
 		/// </summary>
 		public WlanProfileFlags profileFlags;
 	}
+
+	/*
+	/// <summary>
+	/// The EAP_METHOD_TYPE structure contains type, identification, and author information about an EAP method.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct EapMethodType
+	{
+		public EapType eapType; // EAP_TYPE structure that contains the ID for the EAP method as well as specific vendor information.
+		public uint dwAuthorId; // The numeric ID for the author of the EAP method.
+	}
+
+	/// <summary>
+	/// The EAP_TYPE structure contains type and vendor identification information for an EAP method.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct EapType
+	{
+		public byte type;			// The numeric type code for this EAP method, Note  For more information on the allocation of EAP method types, see section 6.2 of RFC 3748: http://go.microsoft.com/fwlink/p/?linkid=84016
+		public uint dwVendorId;		// The vendor ID for the EAP method.
+		public uint dwVendorType;	// The numeric type code for the vendor of this EAP method.
+	}*/
 }

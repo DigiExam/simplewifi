@@ -175,7 +175,54 @@ namespace SimpleWifi.Win32.Interop
 			IntPtr reservedPtr,
 			[Out] out IntPtr wlanBssList
 		);
-		
+
+		/*
+		 DWORD WlanSetProfileEapUserData(
+			_In_        HANDLE hClientHandle,
+			_In_        const GUID *pInterfaceGuid,
+			_In_        LPCWSTR strProfileName,
+			_In_        EAP_METHOD_TYPE eapType,
+			_In_        DWORD dwFlags,
+			_In_        DWORD dwEapUserDataSize,
+			_In_        const LPBYTE pbEapUserData,
+			_Reserved_  PVOID pReserved
+		);
+		 */
+
+		// Link: http://msdn.microsoft.com/en-us/library/windows/desktop/ms706797(v=vs.85).aspx
+		/*[DllImport("wlanapi.dll")]
+		public static extern int WlanSetProfileEapUserData(
+			[In] IntPtr clientHandle,
+			[In, MarshalAs(UnmanagedType.LPStruct)] Guid interfaceGuid,
+			[In, MarshalAs(UnmanagedType.LPWStr)] string profileName,
+			[In] EapMethodType eapType, 	 // EAP_METHOD_TYPE		
+			[In] SetEapUserDataMode dwFlags,
+			[In] uint dwEapUserDataSize,
+			[In] byte[] pbEapUserData, // Not sure if this is correct, const LPBYTE pbEapUserData,
+			IntPtr reservedPtr
+		);*/
+
+		/*
+			DWORD WlanSetProfileEapXmlUserData(
+				_In_        HANDLE hClientHandle,
+				_In_        const GUID *pInterfaceGuid,
+				_In_        LPCWSTR strProfileName,
+				_In_        DWORD dwFlags,
+				_In_        LPCWSTR strEapXmlUserData,
+				_Reserved_  PVOID pReserved
+			);
+		 */ 
+
+		[DllImport("wlanapi.dll")]
+		public static extern int WlanSetProfileEapXmlUserData(
+			[In] IntPtr clientHandle,									// The client's session handle, obtained by a previous call to the WlanOpenHandle function.
+			[In, MarshalAs(UnmanagedType.LPStruct)] Guid interfaceGuid,	// The GUID of the interface.
+			[In, MarshalAs(UnmanagedType.LPWStr)] string profileName,	// The name of the profile associated with the EAP user data. Profile names are case-sensitive. This string must be NULL-terminated.
+			[In] SetEapUserDataMode dwFlags,							// A set of flags that modify the behavior of the function.
+			[In, MarshalAs(UnmanagedType.LPWStr)] string userDataXML,	// A pointer to XML data used to set the user credentials, The XML data must be based on the EAPHost User Credentials schema. To view sample user credential XML data, see EAPHost User Properties: http://msdn.microsoft.com/en-us/library/windows/desktop/bb204765(v=vs.85).aspx
+			IntPtr reservedPtr
+		);
+
 		#endregion
 
 		/// <summary>
