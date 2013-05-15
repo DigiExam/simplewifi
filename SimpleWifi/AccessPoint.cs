@@ -114,10 +114,10 @@ namespace SimpleWifi
 		/// <summary>
 		/// Connect synchronous to the access point.
 		/// </summary>
-		public bool Connect(string password, bool overwriteProfile = false)
+		public bool Connect(AuthRequest request, bool overwriteProfile = false)
 		{
 			// No point to continue with the connect if the password is not valid if overwrite is true or profile is missing.
-			if (!IsValidPassword(password) && (!HasProfile || overwriteProfile))
+			if (!request.IsPasswordValid && (!HasProfile || overwriteProfile))
 				return false;
 
 			// If we should create or overwrite the profile, do so.
@@ -126,8 +126,7 @@ namespace SimpleWifi
 				if (HasProfile)
 					_interface.DeleteProfile(Name);
 
-				string profileXML = ProfileFactory.Generate(this, password);
-				_interface.SetProfile(WlanProfileFlags.AllUser, profileXML, true);				
+				request.Process();				
 			}
 
 			return _interface.ConnectSynchronously(WlanConnectionMode.Profile, _network.dot11BssType, Name, 3000);			
@@ -136,7 +135,7 @@ namespace SimpleWifi
 		/// <summary>
 		/// Connect asynchronous to the access point.
 		/// </summary>
-		public void ConnectAsync(string password, bool overwriteProfile = false, Action<bool> onConnectComplete = null)
+		public void ConnectAsync(AuthRequest request, bool overwriteProfile = false, Action<bool> onConnectComplete = null)
 		{
 			// TODO: Refactor -> Use async connect in wlaninterface.
 			ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
@@ -144,7 +143,7 @@ namespace SimpleWifi
 
 				try
 				{
-					success = Connect(password, overwriteProfile);
+					success = Connect(request, overwriteProfile);
 				}
 				catch (Win32Exception)
 				{

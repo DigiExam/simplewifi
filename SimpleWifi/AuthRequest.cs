@@ -15,12 +15,13 @@ namespace SimpleWifi
 		private WlanAvailableNetwork _network;
 		private WlanInterface _interface;
 
-		internal AuthRequest(AccessPoint ap)
+		public AuthRequest(AccessPoint ap)
 		{	
 			_network	= ap.Network;
 			_interface	= ap.Interface;
 
 			_isPasswordRequired = 
+				_network.securityEnabled &&
 				_network.dot11DefaultCipherAlgorithm != Dot11CipherAlgorithm.None;
 
 			_isEAPStore =
@@ -62,15 +63,29 @@ namespace SimpleWifi
 			}
 		}
 		
-		internal bool SaveToEAP() 
+		private bool SaveToEAP() 
 		{
 			if (!_isEAPStore || !IsPasswordValid)
 				return false;
 
-			string userXML = EapUserFactory.Generate(_network.dot11DefaultCipherAlgorithm, _network.dot11DefaultAuthAlgorithm, _username, _password, _domain);
+			string userXML = EapUserFactory.Generate(_network.dot11DefaultCipherAlgorithm, _username, _password, _domain);
 			_interface.SetEAP(_network.profileName, userXML);
 
 			return true;		
+		}
+
+		internal bool Process()
+		{
+			if (!IsPasswordValid)
+				return false;
+
+			if (_isEAPStore && !SaveToEAP())
+				return false;			
+
+			string profileXML = ProfileFactory.Generate(_network, _password);
+			_interface.SetProfile(WlanProfileFlags.AllUser, profileXML, true);
+
+			return true;
 		}
 	}
 

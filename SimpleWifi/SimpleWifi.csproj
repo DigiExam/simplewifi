@@ -57,7 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessPoint.cs" />
-    <Compile Include="PasswordHelper.cs" />
+    <Compile Include="EapUserFactory.cs" />
+    <Compile Include="AuthRequest.cs" />
     <Compile Include="ProfileFactory.cs" />
     <Compile Include="Win32\Helpers\WlanHelpers.cs" />
     <Compile Include="Win32\Interop\Enums.cs" />
@@ -92,11 +93,15 @@
     <EmbeddedResource Include="ProfileXML\WPA2-PSK.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EapXML\EAP-MS-CHAPv2.xml" />
-    <Content Include="EapXML\EAP-TLS.xml" />
-    <Content Include="EapXML\PEAP-MS-CHAPv2.xml" />
-    <Content Include="EapXML\PEAP-TLS.xml" />
-    <Content Include="EapXML\SDK.xml" />
+    <Content Include="EapUserXML\EAP-MS-CHAPv2.xml" />
+    <Content Include="EapUserXML\EAP-TLS.xml" />
+    <Content Include="EapUserXML\PEAP-MS-CHAPv2.xml" />
+    <Content Include="EapUserXML\PEAP-TLS.xml" />
+    <Content Include="EapUserXML\SDK.xml" />
+    <Content Include="ProfileXML\WPA-Enterprise-PEAP-MSCHAPv2.xml" />
+    <Content Include="ProfileXML\WPA-Enterprise-TLS.xml" />
+    <Content Include="ProfileXML\WPA2-Enterprise-PEAP-MSCHAPv2.xml" />
+    <Content Include="ProfileXML\WPA2-Enterprise-TLS.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

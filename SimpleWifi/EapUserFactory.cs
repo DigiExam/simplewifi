@@ -13,39 +13,29 @@ namespace SimpleWifi
 		/// <summary>
 		/// Generates the EAP user XML
 		/// </summary>
-		internal static string Generate(Dot11CipherAlgorithm cipher, Dot11AuthAlgorithm auth, string username, string password, string domain)
+		internal static string Generate(Dot11CipherAlgorithm cipher, string username, string password, string domain)
 		{
-			throw new NotImplementedException();
+			#warning Robin: Probably not properly implemented, only supports WPA- and WPA-2 Enterprise with PEAP-MSCHAPv2
 
 			string profile = string.Empty;
 			string template = string.Empty;
 			
-			/*switch (ap.Network.dot11DefaultCipherAlgorithm)
+			switch (cipher)
 			{
-				case Dot11CipherAlgorithm.WEP:
-					template = GetTemplate("WEP");
-					string hex = GetHexString(ap.Network.dot11Ssid.SSID);
-					profile = string.Format(template, ap.Name, hex, password);
+				case Dot11CipherAlgorithm.CCMP: // WPA-2
+				case Dot11CipherAlgorithm.TKIP: // WPA
+					template = GetTemplate("PEAP-MS-CHAPv2");
+					profile = string.Format(template, username, password, domain);
 					break;
-				case Dot11CipherAlgorithm.CCMP:
-					template = GetTemplate("WPA2-PSK");
-					profile = string.Format(template, ap.Name, password);
-					break;
-				case Dot11CipherAlgorithm.TKIP:
-					template = GetTemplate("WPA-PSK");
-					profile = string.Format(template, ap.Name, password);
-					break;
-				// TODO: Implement WPA2 Enterprise
-
 				default:
 					throw new NotImplementedException("Profile for selected cipher algorithm is not implemented");
-			}*/
+			}
 
 			return profile;
 		}
 
 		/// <summary>
-		/// Fetches the template for an wireless connection profile.
+		/// Fetches the template for an EAP user
 		/// </summary>
 		private static string GetTemplate(string name)
 		{

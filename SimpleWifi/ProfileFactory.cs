@@ -14,28 +14,47 @@ namespace SimpleWifi
 		/// <summary>
 		/// Generates the profile XML for the access point and password
 		/// </summary>
-		internal static string Generate(AccessPoint ap, string password)
+		internal static string Generate(WlanAvailableNetwork network, string password)
 		{
 			string profile	= string.Empty;
 			string template = string.Empty;
 
-			switch (ap.Network.dot11DefaultCipherAlgorithm)
+			var authAlgo = network.dot11DefaultAuthAlgorithm;
+			string name = Encoding.ASCII.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
+
+			switch (network.dot11DefaultCipherAlgorithm)
 			{
 				case Dot11CipherAlgorithm.WEP:
 					template = GetTemplate("WEP");
-					string hex = GetHexString(ap.Network.dot11Ssid.SSID);
-					profile = string.Format(template, ap.Name, hex, password);
+					string hex = GetHexString(network.dot11Ssid.SSID);					
+					profile = string.Format(template, name, hex, password);
 					break;
-				case Dot11CipherAlgorithm.CCMP: 
-					template = GetTemplate("WPA2-PSK");
-					profile = string.Format(template, ap.Name, password);
+				case Dot11CipherAlgorithm.CCMP:
+					if (authAlgo == Dot11AuthAlgorithm.RSNA)
+					{
+						template = GetTemplate("WPA2-Enterprise-PEAP-MSCHAPv2");
+						profile = string.Format(template, name);
+					}
+					else // PSK
+					{
+						template = GetTemplate("WPA2-PSK");
+						profile = string.Format(template, name, password);
+					}
 					break;
 				case Dot11CipherAlgorithm.TKIP:
-					template = GetTemplate("WPA-PSK");
-					profile = string.Format(template, ap.Name, password);
-					break;			
-					// TODO: Implement WPA2 Enterprise
+					#warning Robin: Not sure WPA uses RSNA
+					if (authAlgo == Dot11AuthAlgorithm.RSNA)
+					{
+						template = GetTemplate("WPA-Enterprise-PEAP-MSCHAPv2");
+						profile = string.Format(template, name);
+					}
+					else // PSK
+					{
+						template = GetTemplate("WPA-PSK");
+						profile = string.Format(template, name, password);
+					}
 
+					break;			
 				default:
 					throw new NotImplementedException("Profile for selected cipher algorithm is not implemented");
 			}					

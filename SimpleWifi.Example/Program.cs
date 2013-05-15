@@ -110,24 +110,40 @@ namespace SimpleWifi.Example
 			int selectedIndex = int.Parse(Console.ReadLine());
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
-			string password = string.Empty;
+			// Auth
+			AuthRequest authRequest = new AuthRequest(selectedAP);
 			bool overwrite = true;
 
-			if (selectedAP.IsSecure)
+			if (authRequest.IsPasswordRequired)
 			{
 				if (selectedAP.HasProfile) // If there already is a stored profile for the network, we can either use it or overwrite it with a new password.
 				{
 					Console.Write("\r\nA network profile already exist, do you want to use it (y/n)? ");
-
 					if (Console.ReadLine().ToLower() == "y")
+					{
 						overwrite = false;
+					}
 				}
 
 				if (overwrite)
-					password = PasswordPrompt(selectedAP);
-			}
+				{
+					if (authRequest.IsUsernameRequired)
+					{
+						Console.Write("\r\nPlease enter a username: ");
+						authRequest.Username = Console.ReadLine();
+					}
+					
+					authRequest.Password = PasswordPrompt(selectedAP);
 
-			selectedAP.ConnectAsync(password, overwrite, OnConnectedComplete);
+					if (authRequest.IsDomainSupported)
+					{
+						Console.Write("\r\nPlease enter a domain: ");
+						authRequest.Domain = Console.ReadLine();
+					}	
+				}
+			}
+			
+			selectedAP.ConnectAsync(authRequest, overwrite, OnConnectedComplete);
 		}
 
 		static string PasswordPrompt(AccessPoint selectedAP)
