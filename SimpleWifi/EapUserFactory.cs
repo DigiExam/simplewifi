@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleWifi.Win32.Interop;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace SimpleWifi
 		/// <summary>
 		/// Generates the EAP user XML
 		/// </summary>
-		internal static string Generate(AccessPoint ap, string username, string password, string domain)
+		internal static string Generate(Dot11CipherAlgorithm cipher, Dot11AuthAlgorithm auth, string username, string password, string domain)
 		{
 			throw new NotImplementedException();
 

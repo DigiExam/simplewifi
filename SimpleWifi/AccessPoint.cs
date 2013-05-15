@@ -91,6 +91,18 @@ namespace SimpleWifi
 			}
 		}
 
+
+		/// <summary>
+		/// Returns the underlying interface object.
+		/// </summary>
+		internal WlanInterface Interface
+		{
+			get
+			{
+				return _interface;
+			}
+		}
+
 		/// <summary>
 		/// Checks that the password format matches this access point's encryption method.
 		/// </summary>

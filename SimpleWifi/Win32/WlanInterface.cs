@@ -472,6 +472,11 @@ namespace SimpleWifi.Win32
 			return reasonCode;
 		}
 
+		public void SetEAP(string profileName, string userXML)
+		{
+			WlanInterop.ThrowIfError(WlanInterop.WlanSetProfileEapXmlUserData(client.clientHandle, info.interfaceGuid, profileName, SetEapUserDataMode.None, userXML, IntPtr.Zero));
+		}
+
 		/// <summary>
 		/// Gets the profile's XML specification.
 		/// </summary>
