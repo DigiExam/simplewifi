@@ -93,15 +93,15 @@
     <EmbeddedResource Include="ProfileXML\WPA2-PSK.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EapUserXML\EAP-MS-CHAPv2.xml" />
-    <Content Include="EapUserXML\EAP-TLS.xml" />
-    <Content Include="EapUserXML\PEAP-MS-CHAPv2.xml" />
-    <Content Include="EapUserXML\PEAP-TLS.xml" />
-    <Content Include="EapUserXML\SDK.xml" />
-    <Content Include="ProfileXML\WPA-Enterprise-PEAP-MSCHAPv2.xml" />
-    <Content Include="ProfileXML\WPA-Enterprise-TLS.xml" />
-    <Content Include="ProfileXML\WPA2-Enterprise-PEAP-MSCHAPv2.xml" />
-    <Content Include="ProfileXML\WPA2-Enterprise-TLS.xml" />
+    <EmbeddedResource Include="EapUserXML\EAP-MS-CHAPv2.xml" />
+    <EmbeddedResource Include="EapUserXML\EAP-TLS.xml" />
+    <EmbeddedResource Include="EapUserXML\PEAP-MS-CHAPv2.xml" />
+    <EmbeddedResource Include="EapUserXML\PEAP-TLS.xml" />
+    <EmbeddedResource Include="EapUserXML\SDK.xml" />
+    <EmbeddedResource Include="ProfileXML\WPA-Enterprise-PEAP-MSCHAPv2.xml" />
+    <EmbeddedResource Include="ProfileXML\WPA-Enterprise-TLS.xml" />
+    <EmbeddedResource Include="ProfileXML\WPA2-Enterprise-PEAP-MSCHAPv2.xml" />
+    <EmbeddedResource Include="ProfileXML\WPA2-Enterprise-TLS.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
