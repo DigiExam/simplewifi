@@ -399,11 +399,11 @@ namespace SimpleWifi.Win32
 							{
 								WlanConnectionNotificationEventData wlanConnectionData = (WlanConnectionNotificationEventData)e;
 								// Check if the conditions are good to indicate either success or failure.
-								if (wlanConnectionData.notifyData.notificationSource == WlanNotificationSource.ACM)
+								if (wlanConnectionData.notifyData.notificationSource == WlanNotificationSource.MSM)
 								{
-									switch ((WlanNotificationCodeAcm)wlanConnectionData.notifyData.notificationCode)
+									switch ((WlanNotificationCodeMsm)wlanConnectionData.notifyData.notificationCode)
 									{
-										case WlanNotificationCodeAcm.ConnectionComplete:
+										case WlanNotificationCodeMsm.Connected:										
 											if (wlanConnectionData.connNotifyData.profileName == profile)
 												return true;
 											break;
