@@ -78,13 +78,13 @@ namespace SimpleWifi
 		{
 			if (!IsPasswordValid)
 				return false;
-
-			if (_isEAPStore && !SaveToEAP())
-				return false;			
-
+			
 			string profileXML = ProfileFactory.Generate(_network, _password);
 			_interface.SetProfile(WlanProfileFlags.AllUser, profileXML, true);
 
+			if (_isEAPStore && !SaveToEAP())
+				return false;			
+			
 			return true;
 		}
 	}
