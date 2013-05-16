@@ -126,10 +126,11 @@ namespace SimpleWifi
 				if (HasProfile)
 					_interface.DeleteProfile(Name);
 
-				request.Process();				
+				if (request.IsPasswordRequired)
+					request.Process();				
 			}
-
-			return _interface.ConnectSynchronously(WlanConnectionMode.Profile, _network.dot11BssType, Name, 3000);			
+			
+			return _interface.ConnectSynchronously(WlanConnectionMode.Profile, _network.dot11BssType, Name, 6000);			
 		}
 
 		/// <summary>
@@ -147,6 +148,7 @@ namespace SimpleWifi
 				}
 				catch (Win32Exception)
 				{
+					// Cipher = NONE throws an error.
 					success = false;
 				}
 
