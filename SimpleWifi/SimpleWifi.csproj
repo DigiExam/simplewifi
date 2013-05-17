@@ -90,7 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProfileXML\WPA-PSK.xml" />
-    <EmbeddedResource Include="ProfileXML\WPA2-PSK.xml" />
+    <EmbeddedResource Include="ProfileXML\WPA2-PSK.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EapUserXML\EAP-MS-CHAPv2.xml" />
@@ -102,6 +104,9 @@
     <EmbeddedResource Include="ProfileXML\WPA-Enterprise-TLS.xml" />
     <EmbeddedResource Include="ProfileXML\WPA2-Enterprise-PEAP-MSCHAPv2.xml" />
     <EmbeddedResource Include="ProfileXML\WPA2-Enterprise-TLS.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProfileXML\OPEN.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

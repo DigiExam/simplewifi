@@ -126,8 +126,7 @@ namespace SimpleWifi
 				if (HasProfile)
 					_interface.DeleteProfile(Name);
 
-				if (request.IsPasswordRequired)
-					request.Process();				
+				request.Process();				
 			}
 
 

@@ -7,6 +7,7 @@ An example console application is supplied.
 
 Currently supported ciphers
 ---------------------------
+- NONE (open networks)
 - WEP
 - WPA-PSK
 - WPA2-PSK

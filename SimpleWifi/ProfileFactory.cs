@@ -18,15 +18,19 @@ namespace SimpleWifi
 		{
 			string profile	= string.Empty;
 			string template = string.Empty;
+			string name		= Encoding.ASCII.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
+			string hex		= GetHexString(network.dot11Ssid.SSID);	
 
 			var authAlgo = network.dot11DefaultAuthAlgorithm;
-			string name = Encoding.ASCII.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
 
 			switch (network.dot11DefaultCipherAlgorithm)
 			{
+				case Dot11CipherAlgorithm.None:
+					template = GetTemplate("OPEN");					
+					profile = string.Format(template, name, hex);
+					break;
 				case Dot11CipherAlgorithm.WEP:
-					template = GetTemplate("WEP");
-					string hex = GetHexString(network.dot11Ssid.SSID);					
+					template = GetTemplate("WEP");					
 					profile = string.Format(template, name, hex, password);
 					break;
 				case Dot11CipherAlgorithm.CCMP:
@@ -83,7 +87,12 @@ namespace SimpleWifi
 			StringBuilder sb = new StringBuilder(ba.Length * 2);
 
 			foreach (byte b in ba)
+			{
+				if (b == 0)
+					break;
+
 				sb.AppendFormat("{0:x2}", b);
+			}
 			
 			return sb.ToString();
 		}
