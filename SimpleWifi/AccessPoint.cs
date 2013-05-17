@@ -129,7 +129,10 @@ namespace SimpleWifi
 				if (request.IsPasswordRequired)
 					request.Process();				
 			}
-			
+
+
+			// TODO: Auth algorithm: IEEE80211_Open + Cipher algorithm: None throws an error.
+			// Probably due to connectionmode profile + no profile exist, cant figure out how to solve it though.
 			return _interface.ConnectSynchronously(WlanConnectionMode.Profile, _network.dot11BssType, Name, 6000);			
 		}
 
@@ -147,8 +150,7 @@ namespace SimpleWifi
 					success = Connect(request, overwriteProfile);
 				}
 				catch (Win32Exception)
-				{
-					// Cipher = NONE throws an error.
+				{					
 					success = false;
 				}
 
