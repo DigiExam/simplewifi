@@ -25,7 +25,8 @@ namespace SimpleWifi
 				case Dot11CipherAlgorithm.CCMP: // WPA-2
 				case Dot11CipherAlgorithm.TKIP: // WPA
 					template = GetTemplate("PEAP-MS-CHAPv2");
-					profile = string.Format(template, username, password, domain);
+
+					profile = string.Format(template, username, FixPass(password), domain);
 					break;
 				default:
 					throw new NotImplementedException("Profile for selected cipher algorithm is not implemented");
@@ -45,6 +46,24 @@ namespace SimpleWifi
 			{
 				return reader.ReadToEnd();
 			}
+		}
+
+		private static string FixPass(string pass)
+		{
+			pass = EncodeToBase64(pass);
+			pass = pass.Replace("&", "&#038;");
+			pass = pass.Replace("<", "&#060;");
+			pass = pass.Replace(">", "&#062;");
+
+			return pass;
+		}
+
+
+		private static string EncodeToBase64(string toEncode)
+		{
+			byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
+			string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+			return returnValue;
 		}
 	}
 }
