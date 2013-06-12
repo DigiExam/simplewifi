@@ -77,14 +77,20 @@ namespace SimpleWifi.Win32
 
 							break;
 						case WlanNotificationCodeAcm.ScanFail:
-							int expectedSize = Marshal.SizeOf(typeof (WlanReasonCode));
+							int expectedSize = Marshal.SizeOf(typeof(int));
 
 							if (notifyData.dataSize >= expectedSize)
 							{
-								WlanReasonCode reasonCode = (WlanReasonCode) Marshal.ReadInt32(notifyData.dataPtr);
+								int reasonInt = Marshal.ReadInt32(notifyData.dataPtr);
 
-								if (wlanIface != null)
-									wlanIface.OnWlanReason(notifyData, reasonCode);
+								// Want to make sure this doesn't crash if windows sends a reasoncode not defined in the enum.
+								if (Enum.IsDefined(typeof(WlanReasonCode), reasonInt))
+								{
+									WlanReasonCode reasonCode = (WlanReasonCode)reasonInt;
+
+									if (wlanIface != null)
+										wlanIface.OnWlanReason(notifyData, reasonCode);
+								}
 							}
 							break;
 					}
