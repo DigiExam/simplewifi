@@ -114,6 +114,13 @@ namespace SimpleWifi.Win32.Interop
 		/// Reserved for future use. Must be set to NULL.
 		/// </summary>
 		uint reserved;
+
+		public bool Equals(WlanAvailableNetwork network)
+		{
+			// Compares the two SSID byte arrays
+			return this.dot11Ssid.SSIDLength == network.dot11Ssid.SSIDLength 
+				&& this.dot11Ssid.SSID.SequenceEqual(network.dot11Ssid.SSID);
+		}
 	}
 
 	/// <summary>

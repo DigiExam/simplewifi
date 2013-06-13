@@ -35,10 +35,23 @@ namespace SimpleWifi
 			
 			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
-				WlanAvailableNetwork[] networks = wlanIface.GetAvailableNetworkList(0);
+				WlanAvailableNetwork[] rawNetworks = wlanIface.GetAvailableNetworkList(0);
+				List<WlanAvailableNetwork> networks = new List<WlanAvailableNetwork>();
 
-				foreach (WlanAvailableNetwork network in networks)				
-					accessPoints.Add(new AccessPoint(wlanIface, network));				
+				// Remove network entries without profile name if one exist with a profile name.
+				foreach (WlanAvailableNetwork network in rawNetworks)
+				{
+					bool hasProfileName						= !string.IsNullOrEmpty(network.profileName);
+					bool anotherInstanceWithProfileExists	= rawNetworks.Where(n => n.Equals(network) && !string.IsNullOrEmpty(n.profileName)).Any();
+
+					if (!anotherInstanceWithProfileExists || hasProfileName)
+						networks.Add(network);
+				}
+
+				foreach (WlanAvailableNetwork network in networks)
+				{
+					accessPoints.Add(new AccessPoint(wlanIface, network));
+				}
 			}
 
 			return accessPoints;
@@ -104,7 +117,7 @@ namespace SimpleWifi
 				return WifiStatus.Connected;
 			else
 				return WifiStatus.Disconnected;
-		}
+		}		
 	}
 
 	public class WifiStatusEventArgs : EventArgs
