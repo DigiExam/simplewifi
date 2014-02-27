@@ -25,9 +25,9 @@ namespace SimpleWifi.Win32
 
 		private Dictionary<Guid,WlanInterface> ifaces = new Dictionary<Guid,WlanInterface>();
 
-        private const int NO_WIFI = 1062;
+		private const int NO_WIFI = 1062;
 
-        public bool NoWifiAvailable = false;
+		public bool NoWifiAvailable = false;
 
 		/// <summary>
 		/// Creates a new instance of a Native Wifi service client.
@@ -35,44 +35,41 @@ namespace SimpleWifi.Win32
 		/// </summary>
 		public WlanClient()
 		{
-            int errorCode = 0;
-            OperatingSystem osInfo = Environment.OSVersion;
-            // this is winxp
-            if (osInfo.Platform == PlatformID.Win32NT && osInfo.Version.Major == 5 && osInfo.Version.Minor != 0)
-            {
-                // wlanapi not supported in sp1 (or sp2 without fix)
-                Console.WriteLine("xp sp " + osInfo.ServicePack);
-                if (osInfo.ServicePack == "Service Pack 1")
-                {
-                    NoWifiAvailable = true;
-                    return;
-                }
-                else if (osInfo.ServicePack == "Service Pack 2") // check if wlanapi is installed
-                {
-                    try
-                    {
-                        errorCode = WlanInterop.WlanOpenHandle(WlanInterop.WLAN_CLIENT_VERSION_XP_SP2, IntPtr.Zero, out negotiatedVersion, out clientHandle);
-                    }
-                    catch
-                    {
-                        errorCode = NO_WIFI;
-                    }
-                }
-            }
-            else
-            {
-                errorCode = WlanInterop.WlanOpenHandle(WlanInterop.WLAN_CLIENT_VERSION_XP_SP2, IntPtr.Zero, out negotiatedVersion, out clientHandle);
-            }
+			int errorCode = 0;
+			OperatingSystem osInfo = Environment.OSVersion;			
 
+			bool isWinXP = 
+				osInfo.Platform == PlatformID.Win32NT && 
+				osInfo.Version.Major == 5 && 
+				osInfo.Version.Minor != 0;
+						
+			if (isWinXP && osInfo.ServicePack == "Service Pack 1") // wlanapi not supported in sp1 (or sp2 without hotfix)
+			{
+				errorCode = NO_WIFI;                
+			}
+			else
+			{
+				// Perform exception safe init
+				// It can be SP2 without hotfix which would generate exception
+				try
+				{
+					errorCode = WlanInterop.WlanOpenHandle(WlanInterop.WLAN_CLIENT_VERSION_XP_SP2, IntPtr.Zero, out negotiatedVersion, out clientHandle);					
+				}
+				catch
+				{
+					errorCode = NO_WIFI;
+				}                
+			}
+			
+			if (errorCode != 0)
+			{
+				NoWifiAvailable = true;
+				return;
+			}
 
-            if (errorCode == NO_WIFI)
-            {
-                NoWifiAvailable = true;
-                return;
-            }
-            // 1062 = no wifi
+			// 1062 = no wifi
 			// OK!
-			WlanInterop.ThrowIfError(errorCode);
+			// WlanInterop.ThrowIfError(errorCode);
 
 			try
 			{
@@ -92,19 +89,19 @@ namespace SimpleWifi.Win32
 		~WlanClient()
 		{
 			// Free the handle when deconstructing the client. There won't be a handle if its xp sp 2 without wlanapi installed
-            try
-            {
-                WlanInterop.WlanCloseHandle(clientHandle, IntPtr.Zero);
-            }
-            catch
-            { }
+			try
+			{
+				WlanInterop.WlanCloseHandle(clientHandle, IntPtr.Zero);
+			}
+			catch
+			{ }
 		}
 
 		// Called from interop
 		private void OnWlanNotification(ref WlanNotificationData notifyData, IntPtr context)
 		{
-            if (NoWifiAvailable)
-                return;
+			if (NoWifiAvailable)
+				return;
 
 			WlanInterface wlanIface = ifaces.ContainsKey(notifyData.interfaceGuid) ? ifaces[notifyData.interfaceGuid] : null;
 
@@ -185,9 +182,9 @@ namespace SimpleWifi.Win32
 		public WlanInterface[] Interfaces
 		{
 			get
-            {
-                if (NoWifiAvailable)
-                    return null;
+			{
+				if (NoWifiAvailable)
+					return null;
 				IntPtr ifaceList;
 
 				WlanInterop.ThrowIfError(WlanInterop.WlanEnumInterfaces(clientHandle, IntPtr.Zero, out ifaceList)); 
