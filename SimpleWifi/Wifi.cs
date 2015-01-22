@@ -16,11 +16,15 @@ namespace SimpleWifi
 		
 		private WlanClient _client;
 		private WifiStatus _connectionStatus;
-		private bool _isConnectionStatusSet = false;
+        private bool _isConnectionStatusSet = false;
+        public bool NoWifiAvailable = false;
 
 		public Wifi()
 		{
 			_client = new WlanClient();
+            NoWifiAvailable = _client.NoWifiAvailable;
+            if (_client.NoWifiAvailable)
+                return;
 			
 			foreach (var inte in _client.Interfaces)
 				inte.WlanNotification += inte_WlanNotification;
@@ -31,7 +35,9 @@ namespace SimpleWifi
 		/// </summary>
 		public List<AccessPoint> GetAccessPoints()
 		{
-			List<AccessPoint> accessPoints = new List<AccessPoint>();
+            List<AccessPoint> accessPoints = new List<AccessPoint>();
+            if (_client.NoWifiAvailable)
+                return accessPoints;
 			
 			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
@@ -61,7 +67,10 @@ namespace SimpleWifi
 		/// Disconnect all wifi interfaces
 		/// </summary>
 		public void Disconnect()
-		{
+        {
+            if (_client.NoWifiAvailable)
+                return;
+
 			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
 				wlanIface.Disconnect();
@@ -100,7 +109,11 @@ namespace SimpleWifi
 		}
 
 		// I don't like this method, it's slow, ugly and should be refactored ASAP.
-		private WifiStatus GetForcedConnectionStatus() {
+        private WifiStatus GetForcedConnectionStatus()
+        {
+            if (NoWifiAvailable)
+                return WifiStatus.Disconnected;
+
 			bool connected = false;
 
 			foreach (var i in _client.Interfaces)

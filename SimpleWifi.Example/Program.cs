@@ -19,6 +19,9 @@ namespace SimpleWifi.Example
 			// Init wifi object and event handlers
 			wifi = new Wifi();
 			wifi.ConnectionStatusChanged += wifi_ConnectionStatusChanged;
+
+            if (wifi.NoWifiAvailable)
+                Console.WriteLine("\r\n-- NO WIFI CARD WAS FOUND --");
 			
 			string command = "";
 			do
@@ -108,6 +111,11 @@ namespace SimpleWifi.Example
 			Console.Write("\r\nEnter the index of the network you wish to connect to: ");
 
 			int selectedIndex = int.Parse(Console.ReadLine());
+            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+            {
+                Console.Write("\r\nIndex out of bounds");
+                return;
+            }
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			// Auth
@@ -172,7 +180,12 @@ namespace SimpleWifi.Example
 
 			Console.Write("\r\nEnter the index of the network you wish to print XML for: ");
 
-			int selectedIndex = int.Parse(Console.ReadLine());
+            int selectedIndex = int.Parse(Console.ReadLine());
+            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+            {
+                Console.Write("\r\nIndex out of bounds");
+                return;
+            }
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			Console.WriteLine("\r\n{0}\r\n", selectedAP.GetProfileXML());
@@ -184,7 +197,12 @@ namespace SimpleWifi.Example
 
 			Console.Write("\r\nEnter the index of the network you wish to delete the profile: ");
 
-			int selectedIndex = int.Parse(Console.ReadLine());
+            int selectedIndex = int.Parse(Console.ReadLine());
+            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+            {
+                Console.Write("\r\nIndex out of bounds");
+                return;
+            }
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			selectedAP.DeleteProfile();
@@ -198,7 +216,12 @@ namespace SimpleWifi.Example
 
 			Console.Write("\r\nEnter the index of the network you wish to see info about: ");
 
-			int selectedIndex = int.Parse(Console.ReadLine());
+            int selectedIndex = int.Parse(Console.ReadLine());
+            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+            {
+                Console.Write("\r\nIndex out of bounds");
+                return;
+            }
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			Console.WriteLine("\r\n{0}\r\n", selectedAP.ToString());
