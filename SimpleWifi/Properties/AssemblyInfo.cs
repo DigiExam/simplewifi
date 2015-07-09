@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SimpleWifi")]
-[assembly: AssemblyDescription(".NET 4.5 library to manage wifi connections")]
+[assembly: AssemblyDescription(".NET 4 library to manage wifi connections")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Arcadelia AB")]
+[assembly: AssemblyCompany("DigiExam AB")]
 [assembly: AssemblyProduct("SimpleWifi")]
-[assembly: AssemblyCopyright("Copyright © Arcadelia AB 2013 - MIT License")]
+[assembly: AssemblyCopyright("Copyright © DigiExam AB 2015 - MIT License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
