@@ -1,9 +1,14 @@
 ﻿SimpleWifi
 ==========
 
+
+[![NuGet](https://img.shields.io/nuget/dt/SimpleWifi.svg)](https://www.nuget.org/packages/SimpleWifi)
+
 SimpleWifi is a .NET 4 library written in C# to manage wifi connections in Windows.  It is basically a layer of abstraction above Managed Wifi API that takes care of wifi connection profile creation etc, built to be easy to use.
 
 An example console application is supplied.
+
+Available on NuGet: https://www.nuget.org/packages/SimpleWifi
 
 Currently supported ciphers
 ---------------------------
