@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace SimpleWifi.Example
 {
-	class Program
+	internal class Program
 	{
 		private static Wifi wifi;
 
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			// Init wifi object and event handlers
 			wifi = new Wifi();
 			wifi.ConnectionStatusChanged += wifi_ConnectionStatusChanged;
 
-            if (wifi.NoWifiAvailable)
-                Console.WriteLine("\r\n-- NO WIFI CARD WAS FOUND --");
-			
+			if (wifi.NoWifiAvailable)
+				Console.WriteLine("\r\n-- NO WIFI CARD WAS FOUND --");
+
 			string command = "";
 			do
 			{
@@ -35,15 +35,14 @@ namespace SimpleWifi.Example
 				Console.WriteLine("R. Remove profile");
 				Console.WriteLine("I. Show access point information");
 				Console.WriteLine("Q. Quit");
-				
+
 				command = Console.ReadLine().ToLower();
 
 				Execute(command);
-
 			} while (command != "q");
 		}
 
-		static void Execute(string command)
+		private static void Execute(string command)
 		{
 			switch (command)
 			{
@@ -73,7 +72,6 @@ namespace SimpleWifi.Example
 				default:
 					Console.WriteLine("\r\nIncorrect command.");
 					break;
-
 			}
 		}
 
@@ -90,8 +88,8 @@ namespace SimpleWifi.Example
 			else
 				Console.WriteLine("You are not connected to a wifi");
 		}
-		
-		static IEnumerable<AccessPoint> List()
+
+		private static IEnumerable<AccessPoint> List()
 		{
 			Console.WriteLine("\r\n-- Access point list --");
 			IEnumerable<AccessPoint> accessPoints = wifi.GetAccessPoints().OrderByDescending(ap => ap.SignalStrength);
@@ -103,19 +101,19 @@ namespace SimpleWifi.Example
 			return accessPoints;
 		}
 
-		
-		static void Connect()
+
+		private static void Connect()
 		{
 			var accessPoints = List();
 
 			Console.Write("\r\nEnter the index of the network you wish to connect to: ");
 
 			int selectedIndex = int.Parse(Console.ReadLine());
-            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
-            {
-                Console.Write("\r\nIndex out of bounds");
-                return;
-            }
+			if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+			{
+				Console.Write("\r\nIndex out of bounds");
+				return;
+			}
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			// Auth
@@ -124,7 +122,8 @@ namespace SimpleWifi.Example
 
 			if (authRequest.IsPasswordRequired)
 			{
-				if (selectedAP.HasProfile) // If there already is a stored profile for the network, we can either use it or overwrite it with a new password.
+				if (selectedAP.HasProfile)
+					// If there already is a stored profile for the network, we can either use it or overwrite it with a new password.
 				{
 					Console.Write("\r\nA network profile already exist, do you want to use it (y/n)? ");
 					if (Console.ReadLine().ToLower() == "y")
@@ -140,21 +139,21 @@ namespace SimpleWifi.Example
 						Console.Write("\r\nPlease enter a username: ");
 						authRequest.Username = Console.ReadLine();
 					}
-					
+
 					authRequest.Password = PasswordPrompt(selectedAP);
 
 					if (authRequest.IsDomainSupported)
 					{
 						Console.Write("\r\nPlease enter a domain: ");
 						authRequest.Domain = Console.ReadLine();
-					}	
+					}
 				}
 			}
-			
+
 			selectedAP.ConnectAsync(authRequest, overwrite, OnConnectedComplete);
 		}
 
-		static string PasswordPrompt(AccessPoint selectedAP)
+		private static string PasswordPrompt(AccessPoint selectedAP)
 		{
 			string password = string.Empty;
 
@@ -174,35 +173,35 @@ namespace SimpleWifi.Example
 			return password;
 		}
 
-		static void ProfileXML()
+		private static void ProfileXML()
 		{
 			var accessPoints = List();
 
 			Console.Write("\r\nEnter the index of the network you wish to print XML for: ");
 
-            int selectedIndex = int.Parse(Console.ReadLine());
-            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
-            {
-                Console.Write("\r\nIndex out of bounds");
-                return;
-            }
+			int selectedIndex = int.Parse(Console.ReadLine());
+			if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+			{
+				Console.Write("\r\nIndex out of bounds");
+				return;
+			}
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			Console.WriteLine("\r\n{0}\r\n", selectedAP.GetProfileXML());
 		}
 
-		static void DeleteProfile()
+		private static void DeleteProfile()
 		{
 			var accessPoints = List();
 
 			Console.Write("\r\nEnter the index of the network you wish to delete the profile: ");
 
-            int selectedIndex = int.Parse(Console.ReadLine());
-            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
-            {
-                Console.Write("\r\nIndex out of bounds");
-                return;
-            }
+			int selectedIndex = int.Parse(Console.ReadLine());
+			if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+			{
+				Console.Write("\r\nIndex out of bounds");
+				return;
+			}
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			selectedAP.DeleteProfile();
@@ -210,29 +209,29 @@ namespace SimpleWifi.Example
 		}
 
 
-		static void ShowInfo()
+		private static void ShowInfo()
 		{
 			var accessPoints = List();
 
 			Console.Write("\r\nEnter the index of the network you wish to see info about: ");
 
-            int selectedIndex = int.Parse(Console.ReadLine());
-            if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
-            {
-                Console.Write("\r\nIndex out of bounds");
-                return;
-            }
+			int selectedIndex = int.Parse(Console.ReadLine());
+			if (selectedIndex > accessPoints.ToArray().Length || accessPoints.ToArray().Length == 0)
+			{
+				Console.Write("\r\nIndex out of bounds");
+				return;
+			}
 			AccessPoint selectedAP = accessPoints.ToList()[selectedIndex];
 
 			Console.WriteLine("\r\n{0}\r\n", selectedAP.ToString());
 		}
-		
-		static void wifi_ConnectionStatusChanged(object sender, WifiStatusEventArgs e)
+
+		private static void wifi_ConnectionStatusChanged(object sender, WifiStatusEventArgs e)
 		{
 			Console.WriteLine("\nNew status: {0}", e.NewStatus.ToString());
 		}
 
-		static void OnConnectedComplete(bool success)
+		private static void OnConnectedComplete(bool success)
 		{
 			Console.WriteLine("\nOnConnectedComplete, success: {0}", success);
 		}
