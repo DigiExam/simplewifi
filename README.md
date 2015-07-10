@@ -6,7 +6,7 @@
 
 SimpleWifi is a .NET 4 library written in C# to manage wifi connections in Windows.  It is basically a layer of abstraction above Managed Wifi API that takes care of wifi connection profile creation etc, built to be easy to use.
 
-An example console application is supplied.
+An example console application is supplied, it can be found in the [example branch](https://github.com/DigiExam/simplewifi/tree/example).
 
 Available on NuGet: https://www.nuget.org/packages/SimpleWifi
 
