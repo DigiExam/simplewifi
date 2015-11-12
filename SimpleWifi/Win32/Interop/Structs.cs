@@ -588,7 +588,45 @@ namespace SimpleWifi.Win32.Interop
 		public WlanProfileFlags profileFlags;
 	}
 
-	/*
+    /// <summary>
+    /// Defines the radio state attributes for a wireless connection.
+    /// </summary>
+    /// <remarks>
+    /// Corresponds to the native <c>WLAN_PHY_RADIO_STATE</c> structure.
+    /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct WlanPhyRadioState
+    {
+        public int dwPhyIndex;
+        public Dot11RadioState dot11SoftwareRadioState;
+        public Dot11RadioState dot11HardwareRadioState;
+    }
+
+    /// <summary>
+    /// Defines the radio state attributes for a wireless connection.
+    /// </summary>
+    /// <remarks>
+    /// Corresponds to the native <c>WLAN_RADIO_STATE</c> type.
+    /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct WlanRadioState
+    {
+        public int numberofItems;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+        private WlanPhyRadioState[] phyRadioState;
+        public WlanPhyRadioState[] PhyRadioState
+        {
+            get
+            {
+                WlanPhyRadioState[] ret = new WlanPhyRadioState[numberofItems];
+                Array.Copy(phyRadioState, ret, numberofItems);
+                return ret;
+            }
+        }
+    }
+
+    /*
 	/// <summary>
 	/// The EAP_METHOD_TYPE structure contains type, identification, and author information about an EAP method.
 	/// </summary>
