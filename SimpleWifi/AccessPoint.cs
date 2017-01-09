@@ -25,7 +25,7 @@ namespace SimpleWifi
 		{
 			get
 			{
-				return Encoding.ASCII.GetString(_network.dot11Ssid.SSID, 0, (int)_network.dot11Ssid.SSIDLength);
+				return Encoding.UTF8.GetString(_network.dot11Ssid.SSID, 0, (int)_network.dot11Ssid.SSIDLength);
 			}
 		}
 
