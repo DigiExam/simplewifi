@@ -633,5 +633,71 @@ namespace SimpleWifi.Win32
 				WlanInterop.WlanFreeMemory(valuePtr);
 			}
 		}
-	}
+
+        /// <summary>
+		/// Turn on WiFi.
+		/// </summary>
+        public void TurnOnWiFi()
+        {
+            IntPtr radioStatePtr = IntPtr.Zero;
+
+            try
+            {
+                WlanPhyRadioState radioState = new WlanPhyRadioState
+                {
+                    dwPhyIndex = 0,
+                    dot11HardwareRadioState = Dot11RadioState.On,
+                    dot11SoftwareRadioState = Dot11RadioState.On
+                };
+
+                radioStatePtr = Marshal.AllocHGlobal(Marshal.SizeOf(radioState));
+                Marshal.StructureToPtr(radioState, radioStatePtr, false);
+
+                WlanInterop.ThrowIfError(WlanInterop.WlanSetInterface(
+                    client.clientHandle,
+                    info.interfaceGuid,
+                    WlanIntfOpcode.RadioState,
+                    (uint)Marshal.SizeOf(typeof(WlanPhyRadioState)),
+                    radioStatePtr,
+                    IntPtr.Zero));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(radioStatePtr);
+            }
+        }
+
+        /// <summary>
+		/// Turn off WiFi.
+		/// </summary>
+        public void TurnOffWiFi()
+        {
+            IntPtr radioStatePtr = IntPtr.Zero;
+
+            try
+            {
+                WlanPhyRadioState radioState = new WlanPhyRadioState
+                {
+                    dwPhyIndex = 0,
+                    dot11HardwareRadioState = Dot11RadioState.Off,
+                    dot11SoftwareRadioState = Dot11RadioState.Off
+                };
+
+                radioStatePtr = Marshal.AllocHGlobal(Marshal.SizeOf(radioState));
+                Marshal.StructureToPtr(radioState, radioStatePtr, false);
+
+                WlanInterop.ThrowIfError(WlanInterop.WlanSetInterface(
+                    client.clientHandle,
+                    info.interfaceGuid,
+                    WlanIntfOpcode.RadioState,
+                    (uint)Marshal.SizeOf(typeof(WlanPhyRadioState)),
+                    radioStatePtr,
+                    IntPtr.Zero));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(radioStatePtr);
+            }
+        }
+    }
 }
