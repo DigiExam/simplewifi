@@ -70,7 +70,7 @@ namespace SimpleWifi
 				try
 				{
 					var a = _interface.CurrentConnection; // This prop throws exception if not connected, which forces me to this try catch. Refactor plix.
-					return a.profileName == _network.profileName;
+					return a.profileName == _network.profileName && a.isState == WlanInterfaceState.Connected;
 				}
 				catch
 				{
