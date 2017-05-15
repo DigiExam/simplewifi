@@ -823,14 +823,27 @@ namespace SimpleWifi.Win32.Interop
 		NetworkMonitor = 0x80000000
 	}
 
-	
-	/// <summary>
-	/// A set of flags that modify the behavior of the function: WlanSetProfileEapUserData
-	/// 
-	/// On Windows Vista and Windows Server 2008, this parameter is reserved and should be set to zero.		
-	/// On Windows 7, Windows Server 2008 R2, and later, this parameter can be one of the following values.
-	/// </summary>
-	[Flags]
+    /// <summary>
+    /// Defines the radio state of a wireless connection.
+    /// </summary>
+    /// <remarks>
+    /// Corresponds to the native <c>DOT11_RADIO_STATE</c> enumeration.
+    /// </remarks>
+    public enum Dot11RadioState : uint
+    {
+        Unknown = 0,
+        On,
+        Off
+    }
+
+
+    /// <summary>
+    /// A set of flags that modify the behavior of the function: WlanSetProfileEapUserData
+    /// 
+    /// On Windows Vista and Windows Server 2008, this parameter is reserved and should be set to zero.		
+    /// On Windows 7, Windows Server 2008 R2, and later, this parameter can be one of the following values.
+    /// </summary>
+    [Flags]
 	public enum SetEapUserDataMode : uint
 	{
 		None						= 0x00000000,

@@ -21,6 +21,8 @@ namespace SimpleWifi
 			string name		= Encoding.ASCII.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
 			string hex		= GetHexString(network.dot11Ssid.SSID);	
 
+			password = System.Security.SecurityElement.Escape(password);
+
 			var authAlgo = network.dot11DefaultAuthAlgorithm;
 
 			switch (network.dot11DefaultCipherAlgorithm)
