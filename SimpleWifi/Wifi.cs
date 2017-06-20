@@ -94,11 +94,11 @@ namespace SimpleWifi
 
 		private void inte_WlanNotification(WlanNotificationData notifyData)
 		{
-			if (notifyData.notificationSource == WlanNotificationSource.ACM && (NotifCodeACM)notifyData.NotificationCode == NotifCodeACM.Disconnected)
-				OnConnectionStatusChanged(WifiStatus.Disconnected);
-			else if (notifyData.notificationSource == WlanNotificationSource.MSM && (NotifCodeMSM)notifyData.NotificationCode == NotifCodeMSM.Connected)
-				OnConnectionStatusChanged(WifiStatus.Connected);
-		}
+            if (notifyData.notificationSource == WlanNotificationSource.ACM && (NotifCodeACM)notifyData.NotificationCode == NotifCodeACM.Disconnected)
+                OnConnectionStatusChanged(WifiStatus.Disconnected);
+            else if (notifyData.notificationSource == WlanNotificationSource.ACM && (NotifCodeACM)notifyData.NotificationCode == NotifCodeACM.ConnectionComplete)
+                OnConnectionStatusChanged(WifiStatus.Connected);
+        }
 
 		private void OnConnectionStatusChanged(WifiStatus newStatus)
 		{
