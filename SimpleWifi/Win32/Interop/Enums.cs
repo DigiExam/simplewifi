@@ -224,8 +224,13 @@ namespace SimpleWifi.Win32.Interop
 		NetworkAvailable,
 		Disconnecting,
 		Disconnected,
-		AdhocNetworkStateChange
-	}
+		AdhocNetworkStateChange,
+        Profile_unblocked,
+        ScreenPowerChange,
+        ProfileBlocked,
+        ScanListRefresh,
+        AcmEnd
+    }
 
 	/// <summary>
 	/// Indicates the type of an MSM (<see cref="WlanNotificationSource.MSM"/>) notification.
