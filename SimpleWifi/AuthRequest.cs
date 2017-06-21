@@ -10,7 +10,7 @@ namespace SimpleWifi
 {
 	public class AuthRequest
 	{
-		private bool _isPasswordRequired, _isUsernameRequired, _isDomainSupported, _isEAPStore;
+		private bool _isPasswordRequired, _isUsernameRequired, _isDomainSupported, _isEAPStore, _ssidBroadcast;
 		private string _password, _username, _domain;
 		private WlanAvailableNetwork _network;
 		private WlanInterface _interface;
@@ -19,7 +19,7 @@ namespace SimpleWifi
 		{	
 			_network	= ap.Network;
 			_interface	= ap.Interface;
-
+		    _ssidBroadcast = ap.IsSsidBroadcasted;
 			_isPasswordRequired = 
 				_network.securityEnabled &&
 				_network.dot11DefaultCipherAlgorithm != Dot11CipherAlgorithm.None;
@@ -79,7 +79,7 @@ namespace SimpleWifi
 			if (!IsPasswordValid)
 				return false;
 			
-			string profileXML = ProfileFactory.Generate(_network, _password);
+			string profileXML = ProfileFactory.Generate(_network, _password, _ssidBroadcast);
 			_interface.SetProfile(WlanProfileFlags.AllUser, profileXML, true);
 
 			if (_isEAPStore && !SaveToEAP())

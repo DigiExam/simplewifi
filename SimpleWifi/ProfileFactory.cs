@@ -14,7 +14,7 @@ namespace SimpleWifi
 		/// <summary>
 		/// Generates the profile XML for the access point and password
 		/// </summary>
-		internal static string Generate(WlanAvailableNetwork network, string password)
+		internal static string Generate(WlanAvailableNetwork network, string password, bool ssidBroadcast)
 		{
 			string profile	= string.Empty;
 			string template = string.Empty;
@@ -42,7 +42,7 @@ namespace SimpleWifi
 					else // PSK
 					{
 						template = GetTemplate("WPA2-PSK");
-						profile = string.Format(template, name, password);
+						profile = string.Format(template, name, password, ssidBroadcast ? "false" : "true");
 					}
 					break;
 				case Dot11CipherAlgorithm.TKIP:
