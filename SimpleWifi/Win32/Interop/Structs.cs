@@ -79,6 +79,11 @@ namespace SimpleWifi.Win32.Interop
 				Array.Copy(dot11PhyTypes, ret, numberOfPhyTypes);
 				return ret;
 			}
+
+		    set
+		    {
+		        dot11PhyTypes = value;
+		    }
 		}
 		/// <summary>
 		/// Specifies if there are more than 8 PHY types supported.

@@ -5,6 +5,7 @@
 		<SSID>
 			<name>{0}</name>
 		</SSID>
+	    <nonBroadcast>{2}</nonBroadcast>
 	</SSIDConfig>
 	<connectionType>ESS</connectionType>
 	<connectionMode>auto</connectionMode>

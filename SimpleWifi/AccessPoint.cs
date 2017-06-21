@@ -14,8 +14,9 @@ namespace SimpleWifi
 	{
 		private WlanInterface _interface;
 		private WlanAvailableNetwork _network;
+	    private bool _isSsidBroadcasted;
 
-		internal AccessPoint(WlanInterface interfac, WlanAvailableNetwork network)
+        public AccessPoint(WlanInterface interfac, WlanAvailableNetwork network, bool ssidBroadcasted = false)
 		{
 			_interface = interfac;
 			_network = network;
@@ -102,6 +103,11 @@ namespace SimpleWifi
 				return _interface;
 			}
 		}
+
+	    internal bool IsSsidBroadcasted
+	    {
+	        get { return _isSsidBroadcasted; }
+	    }
 
 		/// <summary>
 		/// Checks that the password format matches this access point's encryption method.
