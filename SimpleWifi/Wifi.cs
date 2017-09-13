@@ -1,4 +1,4 @@
-﻿using SimpleWifi.Win32;
+using SimpleWifi.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,11 +29,28 @@ namespace SimpleWifi
 			foreach (var inte in _client.Interfaces)
 				inte.WlanNotification += inte_WlanNotification;
 		}
-		
-		/// <summary>
-		/// Returns a list over all available access points
-		/// </summary>
-		public List<AccessPoint> GetAccessPoints()
+
+
+        /// <summary>
+        /// Returns count Wi-Fi Interfaces
+        /// </summary>
+        public int InterfacesCount()
+        {
+            return _client.Interfaces.Length;
+        }
+
+        /// <summary>
+        /// Returns Interfaces
+        /// </summary>
+        public WlanInterface[] Interfaces()
+        {
+            return _client.Interfaces;
+        }
+
+        /// <summary>
+        /// Returns a list over all available access points
+        /// </summary>
+        public List<AccessPoint> GetAccessPoints()
 		{
             List<AccessPoint> accessPoints = new List<AccessPoint>();
             if (_client.NoWifiAvailable)
