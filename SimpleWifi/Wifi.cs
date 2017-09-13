@@ -30,6 +30,16 @@ namespace SimpleWifi
 				inte.WlanNotification += inte_WlanNotification;
 		}
 
+        /// <summary>
+        /// Scann all interfaces
+        /// </summary>
+        public void InterfacesScan()
+        {
+            foreach (WlanInterface wlanIface in _client.Interfaces)
+            {
+                wlanIface.Scan();
+            }
+        }		
 
         /// <summary>
         /// Returns count Wi-Fi Interfaces
