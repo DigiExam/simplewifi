@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 
 namespace SimpleWifi.Win32.Interop
 {
@@ -823,7 +821,57 @@ namespace SimpleWifi.Win32.Interop
 		NetworkMonitor = 0x80000000
 	}
 
-	
+	/// <summary>
+	/// Defines the radio state of a wireless connection.
+	/// </summary>
+	/// <remarks>
+	/// Corresponds to the native <c>DOT11_RADIO_STATE</c> enumeration.
+	/// </remarks>
+	public enum Dot11RadioState : uint
+	{
+		Unknown = 0,
+		On,
+		Off
+	}
+
+	/// <summary>
+	/// Defines the radio state attributes for a wireless connection.
+	/// </summary>
+	/// <remarks>
+	/// Corresponds to the native <c>WLAN_PHY_RADIO_STATE</c> structure.
+	/// </remarks>
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct WlanPhyRadioState
+	{
+		public int dwPhyIndex;
+		public Dot11RadioState dot11SoftwareRadioState;
+		public Dot11RadioState dot11HardwareRadioState;
+	}
+
+	/// <summary>
+	/// Defines the radio state attributes for a wireless connection.
+	/// </summary>
+	/// <remarks>
+	/// Corresponds to the native <c>WLAN_RADIO_STATE</c> type.
+	/// </remarks>
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct WlanRadioState
+	{
+		public int numberofItems;
+
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+		private WlanPhyRadioState[] phyRadioState;
+		public WlanPhyRadioState[] PhyRadioState
+		{
+			get
+			{
+				WlanPhyRadioState[] ret = new WlanPhyRadioState[numberofItems];
+				Array.Copy(phyRadioState, ret, numberofItems);
+				return ret;
+			}
+		}
+	}
+
 	/// <summary>
 	/// A set of flags that modify the behavior of the function: WlanSetProfileEapUserData
 	/// 
