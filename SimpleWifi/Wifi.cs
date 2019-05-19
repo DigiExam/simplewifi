@@ -19,6 +19,8 @@ namespace SimpleWifi
         private bool _isConnectionStatusSet = false;
         public bool NoWifiAvailable = false;
 
+        private DateTime _lastScanned = DateTime.MinValue;
+
 		public Wifi()
 		{
 			_client = new WlanClient();
@@ -28,17 +30,23 @@ namespace SimpleWifi
 			
 			foreach (var inte in _client.Interfaces)
 				inte.WlanNotification += inte_WlanNotification;
+
+            // Scan  all interfaces
+            Scan();
 		}
 		
 		/// <summary>
 		/// Returns a list over all available access points
 		/// </summary>
-		public List<AccessPoint> GetAccessPoints()
+		public List<AccessPoint> GetAccessPoints(bool bRescan = true)
 		{
             List<AccessPoint> accessPoints = new List<AccessPoint>();
             if (_client.NoWifiAvailable)
                 return accessPoints;
-			
+
+            if (bRescan && (DateTime.Now - _lastScanned > TimeSpan.FromSeconds(60)))
+                Scan();
+
 			foreach (WlanInterface wlanIface in _client.Interfaces)
 			{
 				WlanAvailableNetwork[] rawNetworks = wlanIface.GetAvailableNetworkList(0);
@@ -62,6 +70,22 @@ namespace SimpleWifi
 
 			return accessPoints;
 		}
+
+		/// <summary>
+		/// Rescan all wifi interfaces
+		/// </summary>
+        public void Scan()
+        {
+            foreach (WlanInterface wlanIface in _client.Interfaces)
+            {
+                try
+                {
+                    wlanIface.Scan();
+                }
+                catch { }
+            }
+            _lastScanned = DateTime.Now;
+        }
 
 		/// <summary>
 		/// Disconnect all wifi interfaces
