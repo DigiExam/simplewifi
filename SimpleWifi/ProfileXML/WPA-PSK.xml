@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="us-ascii"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
 	<name>{0}</name>
 	<SSIDConfig>
 		<SSID>
-			<name>{0}</name>
+      <hex>{1}</hex>
+      <name>{0}</name>
 		</SSID>
 	</SSIDConfig>
 	<connectionType>ESS</connectionType>
@@ -19,7 +20,7 @@
 			<sharedKey>
 				<keyType>passPhrase</keyType>
 				<protected>false</protected>
-				<keyMaterial>{1}</keyMaterial>
+				<keyMaterial>{2}</keyMaterial>
 			</sharedKey>
 		</security>
 	</MSM>

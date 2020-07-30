@@ -18,8 +18,11 @@ namespace SimpleWifi
 		{
 			string profile	= string.Empty;
 			string template = string.Empty;
-			string name		= Encoding.ASCII.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
-			string hex		= GetHexString(network.dot11Ssid.SSID);	
+			string name		= Encoding.UTF8.GetString(network.dot11Ssid.SSID, 0, (int)network.dot11Ssid.SSIDLength);
+			string hex		= GetHexString(network.dot11Ssid.SSID);
+
+			name = System.Security.SecurityElement.Escape(name);
+			password = System.Security.SecurityElement.Escape(password);			
 
 			var authAlgo = network.dot11DefaultAuthAlgorithm;
 
@@ -37,12 +40,12 @@ namespace SimpleWifi
 					if (authAlgo == Dot11AuthAlgorithm.RSNA)
 					{
 						template = GetTemplate("WPA2-Enterprise-PEAP-MSCHAPv2");
-						profile = string.Format(template, name);
+						profile = string.Format(template, name, hex);
 					}
 					else // PSK
 					{
 						template = GetTemplate("WPA2-PSK");
-						profile = string.Format(template, name, password);
+						profile = string.Format(template, name, hex, password);
 					}
 					break;
 				case Dot11CipherAlgorithm.TKIP:
@@ -50,12 +53,12 @@ namespace SimpleWifi
 					if (authAlgo == Dot11AuthAlgorithm.RSNA)
 					{
 						template = GetTemplate("WPA-Enterprise-PEAP-MSCHAPv2");
-						profile = string.Format(template, name);
+						profile = string.Format(template, name, hex);
 					}
 					else // PSK
 					{
 						template = GetTemplate("WPA-PSK");
-						profile = string.Format(template, name, password);
+						profile = string.Format(template, name, hex, password);
 					}
 
 					break;			
